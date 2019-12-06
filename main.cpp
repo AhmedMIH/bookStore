@@ -12,7 +12,7 @@ using namespace std;
 class book
 {
 	public: char name[10];
-		char author[10];
+		char auther[10];
 		char RRn[5];
 		char price[5];
 		char year[5];
@@ -24,7 +24,7 @@ book s;
 
 void writerecord()
 {
-	file.open("program_3.txt",ios::app);
+	file.open("BookStore.txt",ios::app);
 	if(!file)
 	{
 		cout<<"cannot open the file in append mode";
@@ -32,8 +32,8 @@ void writerecord()
 	}
 	cout<<"\nenter the book name = ";
 	cin>>s.name;
-	cout<<"\nenter the author = ";
-	cin>>s.author;
+	cout<<"\nenter the auther = ";
+	cin>>s.auther;
 	cout<<"\nenter the RRN = ";
 	cin>>s.RRn;
 	cout<<"\nenter the price = ";
@@ -44,7 +44,7 @@ void writerecord()
 
 	strcpy(s.buffer,s.name);
 	strcat(s.buffer,"|");
-	strcat(s.buffer,s.author);
+	strcat(s.buffer,s.auther);
 	strcat(s.buffer,"|");
 	strcat(s.buffer,s.RRn);
 	strcat(s.buffer,"|");
@@ -59,37 +59,73 @@ void writerecord()
 
 void search()
 {
-	char RRN[5];
+	char enter[15];
 	char extra[45];
 
-	file.open("program_3.txt",ios::in);
+	file.open("BookStore.txt",ios::in);
 	if(!file)
 	{
 		cout<<"\nunable to open the file in read mode";
 		exit(0);
 	}
-	cout<<"\nenter the record's RRn you want to search = ";
-	cin>>RRN;
+	int choice;
+	cout << "\nenter number to select the way you need to search" << endl;
+	cout << "0: Exit 1: RRN  2: Book_Name 3: Auther_Name" << endl;
+	cin>>choice;
 
 	while(!file.eof())
 	{
 		file.getline(s.name,10,'|');
-		file.getline(s.author,10,'|');
+		file.getline(s.auther,10,'|');
 		file.getline(s.RRn,5,'|');
 		file.getline(s.price,5,'|');
 		file.getline(s.year,5,'\n');
-
-
-		if(strcmp(s.RRn,RRN)==0)
-		{
+		switch(choice){
+        case 1:{
+            cout << "enter RRN you need to search" << endl;
+			cin >> enter;
+			if(strcmp(s.RRn,enter)==0){
 			cout<<"\nrecord found";
 			cout<<"\nname\tAuhtor\tRRn\tPrice\tYear";
 
-			cout<<"\n"<<s.name<<"\t"<<s.author<<"\t";
+			cout<<"\n"<<s.name<<"\t"<<s.auther<<"\t";
 			cout<<s.RRn<<"\t"<<s.price<<"\t"<<s.year;
 
 			file.close();
 			return;
+			}
+			break;
+		}
+		case 2:{
+            cout << "enter BookName you need to search" << endl;
+			cin >> enter;
+			if(strcmp(s.name,enter)==0){
+			cout<<"\nrecord found";
+			cout<<"\nname\tAuhtor\tRRn\tPrice\tYear";
+
+			cout<<"\n"<<s.name<<"\t"<<s.auther<<"\t";
+			cout<<s.RRn<<"\t"<<s.price<<"\t"<<s.year;
+
+			file.close();
+			return;
+			}
+			break;
+		}
+		case 3:{
+            cout << "enter Auther you need to search" << endl;
+			cin >> enter;
+			if(strcmp(s.auther,enter)==0){
+			cout<<"\nrecord found";
+			cout<<"\nname\tAuhtor\tRRn\tPrice\tYear";
+
+			cout<<"\n"<<s.name<<"\t"<<s.auther<<"\t";
+			cout<<s.RRn<<"\t"<<s.price<<"\t"<<s.year;
+
+			file.close();
+			return;
+			}
+			break;
+		}
 		}
 	}
 	cout<<"\nrecord not found";
@@ -100,7 +136,7 @@ void search()
 void displayFile()
 {
 	int i;
-	file.open("program_3.txt",ios::in);
+	file.open("BookStore.txt",ios::in);
 
 	if(!file)
 	{
@@ -109,17 +145,17 @@ void displayFile()
 	}
 
 	i=0;
-	printf("\n\nName\t\tAuthor\t\tRRn\t\tPrice\t\tYear\n");
+	printf("\n\nName\t\tAuther\t\tRRn\t\tPrice\t\tYear\n");
 
 
 	while(!file.eof())
 	{
 		file.getline(s.name,15,'|');
-		file.getline(s.author,15,'|');
+		file.getline(s.auther,15,'|');
 		file.getline(s.RRn,5,'|');
 		file.getline(s.price,5,'|');
 		file.getline(s.year,5,'\n');
-		printf("\n%s\t\t%s\t\t%s\t\t%s\t\t%s",s.name,s.author,s.RRn,s.price,s.year);
+		printf("\n%s\t\t%s\t\t%s\t\t%s\t\t%s",s.name,s.auther,s.RRn,s.price,s.year);
 		i++;
 	}
 	file.close();
@@ -131,7 +167,7 @@ void Delete(){
 
 	int counter = 0;
 
-	file.open("program_3.txt", ios::in);
+	file.open("BookStore.txt", ios::in);
 	if (!file)
 	{
 		cout << "\nunable to open the file in input mode";
@@ -145,14 +181,14 @@ void Delete(){
 	{
 
 		file.getline(bt[counter].name, 10, '|');
-		file.getline(bt[counter].author, 10, '|');
+		file.getline(bt[counter].auther, 10, '|');
 		file.getline(bt[counter].RRn, 5, '|');
 		file.getline(bt[counter].price, 5, '|');
 		file.getline(bt[counter].year, 5, '\n');
 		counter++;
 	}
 	file.close();
-	file.open("program_3.txt", ios::out);
+	file.open("BookStore.txt", ios::out);
 	for (int j = 0; j < counter - 1; j++)
 	{
 		s = bt[j];
@@ -165,7 +201,7 @@ void Delete(){
 
 		strcpy(s.buffer,s.name);
         strcat(s.buffer,"|");
-        strcat(s.buffer,s.author);
+        strcat(s.buffer,s.auther);
         strcat(s.buffer,"|");
         strcat(s.buffer,s.RRn);
         strcat(s.buffer,"|");
@@ -185,7 +221,7 @@ void modify()
 	int j;
 	book st[100];
 
-	file.open("program_3.txt",ios::in);
+	file.open("BookStore.txt",ios::in);
 	if(!file)
 	{
 		cout<<"\nunable to open the file in input mode";
@@ -197,7 +233,7 @@ void modify()
 	while(!file.eof())
 	{
 		file.getline(st[i].name,15,'|');
-		file.getline(st[i].author,15,'|');
+		file.getline(st[i].auther,15,'|');
 		file.getline(st[i].RRn,5,'|');
 		file.getline(st[i].price,5,'|');
 		file.getline(st[i].year,5,'\n');
@@ -211,15 +247,15 @@ void modify()
 		{
 			cout<<"\nthe old values of the record with RRN"<<RRN<<"are";
 			cout<<"\nname = "<<st[j].name;
-			cout<<"\nAuthor = "<<st[j].author;
+			cout<<"\nAuther = "<<st[j].auther;
 			cout<<"\nRRn = "<<st[j].RRn;
 			cout<<"\nprice = "<<st[j].price;
 			cout<<"\nYear = "<<st[j].year;
 
 			cout<<"\nenter the book name = ";
             cin>>st[j].name;
-            cout<<"\nenter the author = ";
-            cin>>st[j].author;
+            cout<<"\nenter the auther = ";
+            cin>>st[j].auther;
             cout<<"\nenter the RRN = ";
             cin>>st[j].RRn;
             cout<<"\nenter the price = ";
@@ -238,7 +274,7 @@ void modify()
 	}
 	file.close();
 
-	file.open("program_3.txt",ios::out);
+	file.open("BookStore.txt",ios::out);
 	if(!file)
 	{
 		cout<<"\nunable to open the file in output mode";
@@ -247,7 +283,7 @@ void modify()
 
 	for(j=0;j<i;j++)
 	{
-		file<<st[j].name<<'|'<<st[j].author<<'|'<<st[j].RRn
+		file<<st[j].name<<'|'<<st[j].auther<<'|'<<st[j].RRn
 			<<'|'<<st[j].price<<'|'<<st[j].year<<'\n';
 	}
 	file.close();
