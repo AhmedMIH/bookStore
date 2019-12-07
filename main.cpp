@@ -58,7 +58,6 @@ void writerecord(char rrn[5])
 void search()
 {
 	char enter[15];
-	char extra[45];//delete this
 
 	file.open("BookStore.txt",ios::in);
 	if(!file)
@@ -128,7 +127,6 @@ void search()
 
 void displayFile()
 {
-	int i;
 	file.open("BookStore.txt",ios::in);
 
 	if(!file)
@@ -136,8 +134,6 @@ void displayFile()
 		cout<<"\ncannot open the file in read mode";
 		exit(1);
 	}
-
-	i=0;
 	printf("\n\nName\t\tAuther\t\tRRn\t\tPrice\t\tYear\n");
 
 
@@ -149,7 +145,7 @@ void displayFile()
 		file.getline(s.price,5,'|');
 		file.getline(s.year,5,'\n');
 		printf("\n%s\t\t%s\t\t%s\t\t%s\t\t%s",s.name,s.auther,s.RRn,s.price,s.year);
-		i++;
+
 	}
 	file.close();
 }
@@ -282,7 +278,7 @@ void modify()
 }
 
 int check_RRN(char rrn[5]){
-    file.open("BookStore.txt",ios::in);
+    file.open("BookStore.txt",ios::app);
     while (!file.eof()){
         file.getline(s.name,15,'|');
 		file.getline(s.auther,15,'|');
