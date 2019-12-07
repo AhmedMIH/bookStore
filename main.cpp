@@ -22,7 +22,7 @@ class book
 fstream file;
 book s;
 
-void writerecord()
+void writerecord(char rrn[5])
 {
 	file.open("BookStore.txt",ios::app);
 	if(!file)
@@ -34,8 +34,6 @@ void writerecord()
 	cin>>s.name;
 	cout<<"\nenter the auther = ";
 	cin>>s.auther;
-	cout<<"\nenter the RRN = ";
-	cin>>s.RRn;
 	cout<<"\nenter the price = ";
 	cin>>s.price;
 	cout<<"\nenter the year of publishe = ";
@@ -46,7 +44,7 @@ void writerecord()
 	strcat(s.buffer,"|");
 	strcat(s.buffer,s.auther);
 	strcat(s.buffer,"|");
-	strcat(s.buffer,s.RRn);
+	strcat(s.buffer,rrn);
 	strcat(s.buffer,"|");
 	strcat(s.buffer,s.price);
 	strcat(s.buffer,"|");
@@ -60,7 +58,7 @@ void writerecord()
 void search()
 {
 	char enter[15];
-	char extra[45];
+	char extra[45];//delete this
 
 	file.open("BookStore.txt",ios::in);
 	if(!file)
@@ -72,7 +70,8 @@ void search()
 	cout << "\nenter number to select the way you need to search" << endl;
 	cout << "0: Exit 1: RRN  2: Book_Name 3: Auther_Name" << endl;
 	cin>>choice;
-
+	cout << "enter value you need to search" << endl;
+    cin >> enter;
 	while(!file.eof())
 	{
 		file.getline(s.name,10,'|');
@@ -82,8 +81,6 @@ void search()
 		file.getline(s.year,5,'\n');
 		switch(choice){
         case 1:{
-            cout << "enter RRN you need to search" << endl;
-			cin >> enter;
 			if(strcmp(s.RRn,enter)==0){
 			cout<<"\nrecord found";
 			cout<<"\nname\tAuhtor\tRRn\tPrice\tYear";
@@ -97,8 +94,6 @@ void search()
 			break;
 		}
 		case 2:{
-            cout << "enter BookName you need to search" << endl;
-			cin >> enter;
 			if(strcmp(s.name,enter)==0){
 			cout<<"\nrecord found";
 			cout<<"\nname\tAuhtor\tRRn\tPrice\tYear";
@@ -112,8 +107,6 @@ void search()
 			break;
 		}
 		case 3:{
-            cout << "enter Auther you need to search" << endl;
-			cin >> enter;
 			if(strcmp(s.auther,enter)==0){
 			cout<<"\nrecord found";
 			cout<<"\nname\tAuhtor\tRRn\tPrice\tYear";
@@ -164,7 +157,6 @@ void displayFile()
 void Delete(){
     book bt[100];
 	int RRN;
-
 	int counter = 0;
 
 	file.open("BookStore.txt", ios::in);
@@ -221,7 +213,7 @@ void modify()
 	int j;
 	book st[100];
 
-	file.open("BookStore.txt",ios::in);
+	file.open("BookStore.txt",ios::in);//make it app
 	if(!file)
 	{
 		cout<<"\nunable to open the file in input mode";
@@ -262,8 +254,8 @@ void modify()
             cin>>st[j].price;
             cout<<"\nenter the year of publishe = ";
             cin>>st[j].year;
-
 			break;
+
 		}
 	}
 
@@ -289,7 +281,23 @@ void modify()
 	file.close();
 }
 
-
+int check_RRN(char rrn[5]){
+    file.open("BookStore.txt",ios::in);
+    while (!file.eof()){
+        file.getline(s.name,15,'|');
+		file.getline(s.auther,15,'|');
+		file.getline(s.RRn,5,'|');
+		file.getline(s.price,5,'|');
+		file.getline(s.year,5,'\n');
+		if(strcmp(s.RRn,rrn) == 0){
+            cout<<"the rrn is already exist !"<<endl;
+            file.close();
+            return -1;
+		}
+    }
+    file.close();
+    return 1;
+}
 int main()
 {
 	int choice;
@@ -303,10 +311,19 @@ int main()
 		cout<<"\n 5 : Delete";
 		cout<<"\n\n enter the choice : ";
 		cin>>choice;
-
 		switch(choice)
 		{
-			case 1: writerecord();
+			case 1: {
+			    int flag;
+			    book temp;
+			    cout << "enter RRN : "<<endl;
+			    cin >> temp.RRn;
+			    flag=check_RRN(temp.RRn);
+			    if(flag != -1){
+			        writerecord(temp.RRn);
+			    }
+
+			}
 				break;
 
 			case 2: displayFile();
